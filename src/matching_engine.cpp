@@ -7,6 +7,7 @@ MatchingEngine::MatchingEngine(size_t numThreads) {
     for (size_t i = 0; i < numThreads; ++i) {
         workerThreads_.emplace_back(&MatchingEngine::processingThread, this);
     }
+    startTime_ = std::chrono::steady_clock::now();
 }
 
 MatchingEngine::~MatchingEngine() {
@@ -89,11 +90,10 @@ void MatchingEngine::processOrder(std::shared_ptr<Order> order) {
 
 void MatchingEngine::handleMarketOrder(std::shared_ptr<Order> order) {
     auto matches = orderBook_.matchMarketOrder(order);
-    // In a real system, we would notify about matches here
-    for (const auto& match : matches) {
-        // Process trade - in production we would notify the parties involved
-        double price = match.second->getPrice();
-        orderBook_.checkStopOrders(price);
+    // Process matches - in production would notify trading parties
+    if (!matches.empty()) {
+        double lastPrice = matches.back().second->getPrice();
+        orderBook_.checkStopOrders(lastPrice);
     }
 }
 
@@ -123,3 +123,5 @@ uint64_t MatchingEngine::getOrdersProcessedPerSecond() const {
     auto duration = std::chrono::duration_cast<std::chrono::seconds>(now - startTime_).count();
     return duration > 0 ? orderCount_ / duration : 0;
 }
+
+} // namespace trading

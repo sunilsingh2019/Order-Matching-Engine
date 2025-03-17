@@ -29,8 +29,6 @@ bool OrderBook::cancelOrder(const std::string& orderId) {
     if (it == orderMap_.end()) return false;
 
     auto order = it->second;
-    auto& book = (order->getSide() == OrderSide::BUY) ? bids_ : asks_;
-    
     if (order->getType() == OrderType::STOP) {
         auto range = stopOrders_.equal_range(order->getStopPrice());
         for (auto it = range.first; it != range.second; ++it) {
@@ -40,16 +38,21 @@ bool OrderBook::cancelOrder(const std::string& orderId) {
                 return true;
             }
         }
-    } else {
-        auto& priceLevel = book[order->getPrice()];
-        auto& orders = priceLevel.orders;
-        orders.remove_if([&orderId](const auto& o) { return o->getOrderId() == orderId; });
+    }
+
+    auto& book = (order->getSide() == OrderSide::BUY) ? bids_ : asks_;
+    auto levelIt = book.find(order->getPrice());
+    if (levelIt != book.end()) {
+        auto& orders = levelIt->second.orders;
+        orders.remove_if([&orderId](const auto& o) { 
+            return o->getOrderId() == orderId; 
+        });
         
         if (orders.empty()) {
-            book.erase(order->getPrice());
+            book.erase(levelIt);
         }
-        orderMap_.erase(orderId);
     }
+    orderMap_.erase(orderId);
     return true;
 }
 
@@ -61,13 +64,13 @@ OrderBook::matchMarketOrder(std::shared_ptr<Order> order) {
     auto& oppositeBook = (order->getSide() == OrderSide::BUY) ? asks_ : bids_;
     double remainingQty = order->getQuantity();
     
-    while (remainingQty > 0 && !oppositeBook.empty()) {
-        auto& bestPrice = (order->getSide() == OrderSide::BUY) ? 
-            oppositeBook.begin()->second : oppositeBook.rbegin()->second;
+    for (auto bookIt = oppositeBook.begin(); 
+         bookIt != oppositeBook.end() && remainingQty > 0;) {
+        auto& priceLevel = bookIt->second;
         
-        for (auto it = bestPrice.orders.begin(); 
-             it != bestPrice.orders.end() && remainingQty > 0;) {
-            auto matchedOrder = *it;
+        for (auto orderIt = priceLevel.orders.begin(); 
+             orderIt != priceLevel.orders.end() && remainingQty > 0;) {
+            auto matchedOrder = *orderIt;
             double matchQty = std::min(remainingQty, matchedOrder->getQuantity());
             
             matches.emplace_back(order, matchedOrder);
@@ -76,15 +79,17 @@ OrderBook::matchMarketOrder(std::shared_ptr<Order> order) {
             
             if (matchedOrder->getQuantity() <= 0) {
                 orderMap_.erase(matchedOrder->getOrderId());
-                it = bestPrice.orders.erase(it);
+                orderIt = priceLevel.orders.erase(orderIt);
             } else {
-                ++it;
+                ++orderIt;
             }
             totalMatchesExecuted_++;
         }
         
-        if (bestPrice.orders.empty()) {
-            oppositeBook.erase(bestPrice.price);
+        if (priceLevel.orders.empty()) {
+            bookIt = oppositeBook.erase(bookIt);
+        } else {
+            ++bookIt;
         }
     }
     
@@ -116,7 +121,6 @@ void OrderBook::checkStopOrders(double lastTradePrice) {
     
     // Convert triggered stop orders to limit orders
     for (auto& order : triggeredOrders) {
-        order->setQuantity(order->getQuantity());  // Convert to limit order at stop price
         addOrder(order);
     }
 }
@@ -130,3 +134,5 @@ double OrderBook::getBestAsk() const {
     std::shared_lock<std::shared_mutex> lock(mutex_);
     return asks_.empty() ? 0.0 : asks_.begin()->first;
 }
+
+} // namespace trading
