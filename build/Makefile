@@ -153,17 +153,17 @@ trading_engine/fast:
 .PHONY : trading_engine/fast
 
 #=============================================================================
-# Target rules for targets named matching_engine_tests
+# Target rules for targets named order_book_tests
 
 # Build rule for target.
-matching_engine_tests: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 matching_engine_tests
-.PHONY : matching_engine_tests
+order_book_tests: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 order_book_tests
+.PHONY : order_book_tests
 
 # fast build rule for target.
-matching_engine_tests/fast:
-	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/matching_engine_tests.dir/build.make tests/CMakeFiles/matching_engine_tests.dir/build
-.PHONY : matching_engine_tests/fast
+order_book_tests/fast:
+	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/order_book_tests.dir/build.make tests/CMakeFiles/order_book_tests.dir/build
+.PHONY : order_book_tests/fast
 
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
@@ -270,7 +270,7 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... test"
-	@echo "... matching_engine_tests"
+	@echo "... order_book_tests"
 	@echo "... order_matching_engine"
 	@echo "... trading_engine"
 	@echo "... src/main.o"

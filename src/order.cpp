@@ -2,8 +2,8 @@
 
 namespace trading {
 
-Order::Order(const std::string& orderId, 
-            OrderType type, 
+Order::Order(const std::string& orderId,
+            OrderType type,
             OrderSide side,
             double price,
             double quantity,
@@ -15,4 +15,5 @@ Order::Order(const std::string& orderId,
     , quantity_(quantity)
     , stopPrice_(stopPrice)
     , timestamp_(std::chrono::system_clock::now())
-{}
+{
+}

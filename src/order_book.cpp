@@ -1,12 +1,14 @@
 #include "order_book.hpp"
 #include <algorithm>
 
+using namespace std;
+
 namespace trading {
 
 OrderBook::OrderBook() = default;
 
-bool OrderBook::addOrder(std::shared_ptr<Order> order) {
-    std::unique_lock<std::shared_mutex> lock(mutex_);
+bool OrderBook::addOrder(shared_ptr<Order> order) {
+    unique_lock<shared_mutex> lock(mutex_);
     
     if (order->getType() == OrderType::STOP) {
         stopOrders_.emplace(order->getStopPrice(), order);
@@ -23,8 +25,8 @@ bool OrderBook::addOrder(std::shared_ptr<Order> order) {
     return true;
 }
 
-bool OrderBook::cancelOrder(const std::string& orderId) {
-    std::unique_lock<std::shared_mutex> lock(mutex_);
+bool OrderBook::cancelOrder(const string& orderId) {
+    unique_lock<shared_mutex> lock(mutex_);
     auto it = orderMap_.find(orderId);
     if (it == orderMap_.end()) return false;
 
@@ -56,10 +58,10 @@ bool OrderBook::cancelOrder(const std::string& orderId) {
     return true;
 }
 
-std::vector<std::pair<std::shared_ptr<Order>, std::shared_ptr<Order>>> 
-OrderBook::matchMarketOrder(std::shared_ptr<Order> order) {
-    std::unique_lock<std::shared_mutex> lock(mutex_);
-    std::vector<std::pair<std::shared_ptr<Order>, std::shared_ptr<Order>>> matches;
+vector<pair<shared_ptr<Order>, shared_ptr<Order>>> 
+OrderBook::matchMarketOrder(shared_ptr<Order> order) {
+    unique_lock<shared_mutex> lock(mutex_);
+    vector<pair<shared_ptr<Order>, shared_ptr<Order>>> matches;
     
     auto& oppositeBook = (order->getSide() == OrderSide::BUY) ? asks_ : bids_;
     double remainingQty = order->getQuantity();
@@ -71,7 +73,7 @@ OrderBook::matchMarketOrder(std::shared_ptr<Order> order) {
         for (auto orderIt = priceLevel.orders.begin(); 
              orderIt != priceLevel.orders.end() && remainingQty > 0;) {
             auto matchedOrder = *orderIt;
-            double matchQty = std::min(remainingQty, matchedOrder->getQuantity());
+            double matchQty = min(remainingQty, matchedOrder->getQuantity());
             
             matches.emplace_back(order, matchedOrder);
             remainingQty -= matchQty;
@@ -97,8 +99,8 @@ OrderBook::matchMarketOrder(std::shared_ptr<Order> order) {
 }
 
 void OrderBook::checkStopOrders(double lastTradePrice) {
-    std::unique_lock<std::shared_mutex> lock(mutex_);
-    std::vector<std::shared_ptr<Order>> triggeredOrders;
+    unique_lock<shared_mutex> lock(mutex_);
+    vector<shared_ptr<Order>> triggeredOrders;
     
     auto it = stopOrders_.begin();
     while (it != stopOrders_.end()) {
@@ -119,19 +121,18 @@ void OrderBook::checkStopOrders(double lastTradePrice) {
         }
     }
     
-    // Convert triggered stop orders to limit orders
     for (auto& order : triggeredOrders) {
         addOrder(order);
     }
 }
 
 double OrderBook::getBestBid() const {
-    std::shared_lock<std::shared_mutex> lock(mutex_);
+    shared_lock<shared_mutex> lock(mutex_);
     return bids_.empty() ? 0.0 : bids_.begin()->first;
 }
 
 double OrderBook::getBestAsk() const {
-    std::shared_lock<std::shared_mutex> lock(mutex_);
+    shared_lock<shared_mutex> lock(mutex_);
     return asks_.empty() ? 0.0 : asks_.begin()->first;
 }
 

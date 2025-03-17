@@ -127,25 +127,25 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
-tests/CMakeFiles/matching_engine_tests.dir/rule:
-	cd /Users/aasthashrestha/Sites/Order-Matching-Engine/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/matching_engine_tests.dir/rule
-.PHONY : tests/CMakeFiles/matching_engine_tests.dir/rule
+tests/CMakeFiles/order_book_tests.dir/rule:
+	cd /Users/aasthashrestha/Sites/Order-Matching-Engine/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/order_book_tests.dir/rule
+.PHONY : tests/CMakeFiles/order_book_tests.dir/rule
 
 # Convenience name for target.
-matching_engine_tests: tests/CMakeFiles/matching_engine_tests.dir/rule
-.PHONY : matching_engine_tests
+order_book_tests: tests/CMakeFiles/order_book_tests.dir/rule
+.PHONY : order_book_tests
 
 # fast build rule for target.
-matching_engine_tests/fast:
-	cd /Users/aasthashrestha/Sites/Order-Matching-Engine/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/matching_engine_tests.dir/build.make tests/CMakeFiles/matching_engine_tests.dir/build
-.PHONY : matching_engine_tests/fast
+order_book_tests/fast:
+	cd /Users/aasthashrestha/Sites/Order-Matching-Engine/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/order_book_tests.dir/build.make tests/CMakeFiles/order_book_tests.dir/build
+.PHONY : order_book_tests/fast
 
 order_book_tests.o: order_book_tests.cpp.o
 .PHONY : order_book_tests.o
 
 # target to build an object file
 order_book_tests.cpp.o:
-	cd /Users/aasthashrestha/Sites/Order-Matching-Engine/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/matching_engine_tests.dir/build.make tests/CMakeFiles/matching_engine_tests.dir/order_book_tests.cpp.o
+	cd /Users/aasthashrestha/Sites/Order-Matching-Engine/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/order_book_tests.dir/build.make tests/CMakeFiles/order_book_tests.dir/order_book_tests.cpp.o
 .PHONY : order_book_tests.cpp.o
 
 order_book_tests.i: order_book_tests.cpp.i
@@ -153,7 +153,7 @@ order_book_tests.i: order_book_tests.cpp.i
 
 # target to preprocess a source file
 order_book_tests.cpp.i:
-	cd /Users/aasthashrestha/Sites/Order-Matching-Engine/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/matching_engine_tests.dir/build.make tests/CMakeFiles/matching_engine_tests.dir/order_book_tests.cpp.i
+	cd /Users/aasthashrestha/Sites/Order-Matching-Engine/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/order_book_tests.dir/build.make tests/CMakeFiles/order_book_tests.dir/order_book_tests.cpp.i
 .PHONY : order_book_tests.cpp.i
 
 order_book_tests.s: order_book_tests.cpp.s
@@ -161,7 +161,7 @@ order_book_tests.s: order_book_tests.cpp.s
 
 # target to generate assembly for a file
 order_book_tests.cpp.s:
-	cd /Users/aasthashrestha/Sites/Order-Matching-Engine/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/matching_engine_tests.dir/build.make tests/CMakeFiles/matching_engine_tests.dir/order_book_tests.cpp.s
+	cd /Users/aasthashrestha/Sites/Order-Matching-Engine/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/order_book_tests.dir/build.make tests/CMakeFiles/order_book_tests.dir/order_book_tests.cpp.s
 .PHONY : order_book_tests.cpp.s
 
 # Help Target
@@ -173,7 +173,7 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... test"
-	@echo "... matching_engine_tests"
+	@echo "... order_book_tests"
 	@echo "... order_book_tests.o"
 	@echo "... order_book_tests.i"
 	@echo "... order_book_tests.s"

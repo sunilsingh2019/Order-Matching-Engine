@@ -24,7 +24,6 @@ public:
           double quantity,
           double stopPrice = 0.0);
 
-    // Getters
     const std::string& getOrderId() const { return orderId_; }
     OrderType getType() const { return type_; }
     OrderSide getSide() const { return side_; }
@@ -33,7 +32,6 @@ public:
     double getStopPrice() const { return stopPrice_; }
     std::chrono::system_clock::time_point getTimestamp() const { return timestamp_; }
 
-    // Setters
     void setQuantity(double quantity) { quantity_ = quantity; }
 
 private:
@@ -45,3 +43,4 @@ private:
     double stopPrice_;
     std::chrono::system_clock::time_point timestamp_;
 };
+}

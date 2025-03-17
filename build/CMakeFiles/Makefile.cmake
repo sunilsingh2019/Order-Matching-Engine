@@ -67,5 +67,5 @@ set(CMAKE_MAKEFILE_PRODUCTS
 set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/order_matching_engine.dir/DependInfo.cmake"
   "CMakeFiles/trading_engine.dir/DependInfo.cmake"
-  "tests/CMakeFiles/matching_engine_tests.dir/DependInfo.cmake"
+  "tests/CMakeFiles/order_book_tests.dir/DependInfo.cmake"
   )

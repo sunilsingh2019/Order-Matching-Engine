@@ -11,7 +11,7 @@ namespace trading {
 
 class MatchingEngine {
 public:
-    MatchingEngine(size_t numThreads = std::thread::hardware_concurrency());
+    explicit MatchingEngine(size_t numThreads = std::thread::hardware_concurrency());
     ~MatchingEngine();
 
     // Non-copyable

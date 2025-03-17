@@ -88,11 +88,11 @@ clean: tests/clean
 # Directory level rules for directory tests
 
 # Recursive "all" directory target.
-tests/all: tests/CMakeFiles/matching_engine_tests.dir/all
+tests/all: tests/CMakeFiles/order_book_tests.dir/all
 .PHONY : tests/all
 
 # Recursive "codegen" directory target.
-tests/codegen: tests/CMakeFiles/matching_engine_tests.dir/codegen
+tests/codegen: tests/CMakeFiles/order_book_tests.dir/codegen
 .PHONY : tests/codegen
 
 # Recursive "preinstall" directory target.
@@ -100,7 +100,7 @@ tests/preinstall:
 .PHONY : tests/preinstall
 
 # Recursive "clean" directory target.
-tests/clean: tests/CMakeFiles/matching_engine_tests.dir/clean
+tests/clean: tests/CMakeFiles/order_book_tests.dir/clean
 .PHONY : tests/clean
 
 #=============================================================================
@@ -168,36 +168,36 @@ CMakeFiles/trading_engine.dir/clean:
 .PHONY : CMakeFiles/trading_engine.dir/clean
 
 #=============================================================================
-# Target rules for target tests/CMakeFiles/matching_engine_tests.dir
+# Target rules for target tests/CMakeFiles/order_book_tests.dir
 
 # All Build rule for target.
-tests/CMakeFiles/matching_engine_tests.dir/all: CMakeFiles/order_matching_engine.dir/all
-	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/matching_engine_tests.dir/build.make tests/CMakeFiles/matching_engine_tests.dir/depend
-	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/matching_engine_tests.dir/build.make tests/CMakeFiles/matching_engine_tests.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/aasthashrestha/Sites/Order-Matching-Engine/build/CMakeFiles --progress-num=1,2 "Built target matching_engine_tests"
-.PHONY : tests/CMakeFiles/matching_engine_tests.dir/all
+tests/CMakeFiles/order_book_tests.dir/all: CMakeFiles/order_matching_engine.dir/all
+	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/order_book_tests.dir/build.make tests/CMakeFiles/order_book_tests.dir/depend
+	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/order_book_tests.dir/build.make tests/CMakeFiles/order_book_tests.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/aasthashrestha/Sites/Order-Matching-Engine/build/CMakeFiles --progress-num=1,2 "Built target order_book_tests"
+.PHONY : tests/CMakeFiles/order_book_tests.dir/all
 
 # Build rule for subdir invocation for target.
-tests/CMakeFiles/matching_engine_tests.dir/rule: cmake_check_build_system
+tests/CMakeFiles/order_book_tests.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/aasthashrestha/Sites/Order-Matching-Engine/build/CMakeFiles 6
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/matching_engine_tests.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/order_book_tests.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/aasthashrestha/Sites/Order-Matching-Engine/build/CMakeFiles 0
-.PHONY : tests/CMakeFiles/matching_engine_tests.dir/rule
+.PHONY : tests/CMakeFiles/order_book_tests.dir/rule
 
 # Convenience name for target.
-matching_engine_tests: tests/CMakeFiles/matching_engine_tests.dir/rule
-.PHONY : matching_engine_tests
+order_book_tests: tests/CMakeFiles/order_book_tests.dir/rule
+.PHONY : order_book_tests
 
 # codegen rule for target.
-tests/CMakeFiles/matching_engine_tests.dir/codegen:
-	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/matching_engine_tests.dir/build.make tests/CMakeFiles/matching_engine_tests.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/aasthashrestha/Sites/Order-Matching-Engine/build/CMakeFiles --progress-num=1,2 "Finished codegen for target matching_engine_tests"
-.PHONY : tests/CMakeFiles/matching_engine_tests.dir/codegen
+tests/CMakeFiles/order_book_tests.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/order_book_tests.dir/build.make tests/CMakeFiles/order_book_tests.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/aasthashrestha/Sites/Order-Matching-Engine/build/CMakeFiles --progress-num=1,2 "Finished codegen for target order_book_tests"
+.PHONY : tests/CMakeFiles/order_book_tests.dir/codegen
 
 # clean rule for target.
-tests/CMakeFiles/matching_engine_tests.dir/clean:
-	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/matching_engine_tests.dir/build.make tests/CMakeFiles/matching_engine_tests.dir/clean
-.PHONY : tests/CMakeFiles/matching_engine_tests.dir/clean
+tests/CMakeFiles/order_book_tests.dir/clean:
+	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/order_book_tests.dir/build.make tests/CMakeFiles/order_book_tests.dir/clean
+.PHONY : tests/CMakeFiles/order_book_tests.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.
