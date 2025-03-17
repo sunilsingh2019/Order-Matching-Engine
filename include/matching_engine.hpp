@@ -49,3 +49,5 @@ private:
     std::atomic<uint64_t> orderCount_{0};
     std::chrono::steady_clock::time_point startTime_;
 };
+
+} // namespace trading

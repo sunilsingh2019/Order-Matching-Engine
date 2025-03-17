@@ -22,14 +22,18 @@ struct PriceLevel {
 class OrderBook {
 public:
     OrderBook();
+    ~OrderBook() = default;
 
+    // Order operations
     bool addOrder(std::shared_ptr<Order> order);
     bool cancelOrder(const std::string& orderId);
     bool modifyOrder(const std::string& orderId, double newQuantity);
 
+    // Market data accessors
     double getBestBid() const;
     double getBestAsk() const;
     
+    // Trading operations
     std::vector<std::pair<std::shared_ptr<Order>, std::shared_ptr<Order>>> 
     matchMarketOrder(std::shared_ptr<Order> order);
     

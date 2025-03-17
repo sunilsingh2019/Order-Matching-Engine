@@ -1,36 +1,97 @@
 #include "matching_engine.hpp"
 #include <iostream>
+#include <iomanip>
+#include <random>
 #include <thread>
-#include <chrono>
 
 using namespace trading;
+using namespace std;
+
+// Helper function to generate random order IDs
+string generateOrderId() {
+    static atomic<uint64_t> orderId{0};
+    return "order_" + to_string(++orderId);
+}
+
+// Helper function to generate random prices around a base price
+double generatePrice(double basePrice, double variance, mt19937& gen) {
+    uniform_real_distribution<> dis(-variance, variance);
+    return basePrice + dis(gen);
+}
 
 int main() {
-    // Create matching engine with hardware thread count
+    // Create the matching engine with hardware thread count
     MatchingEngine engine;
     engine.start();
 
-    // Create some sample orders
-    auto sellOrder1 = std::make_shared<Order>("sell1", OrderType::LIMIT, OrderSide::SELL, 100.0, 1000);
-    auto sellOrder2 = std::make_shared<Order>("sell2", OrderType::LIMIT, OrderSide::SELL, 101.0, 1000);
-    auto buyOrder1 = std::make_shared<Order>("buy1", OrderType::LIMIT, OrderSide::BUY, 99.0, 500);
-    auto marketBuy = std::make_shared<Order>("mbuy1", OrderType::MARKET, OrderSide::BUY, 0.0, 750);
+    // Random number generation
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_real_distribution<> quantityDis(1.0, 100.0);
+    uniform_int_distribution<> sideDis(0, 1);
 
-    // Submit orders
-    engine.submitOrder(sellOrder1);
-    engine.submitOrder(sellOrder2);
-    engine.submitOrder(buyOrder1);
+    const double basePrice = 100.0;
+    const double variance = 2.0;
     
-    // Small delay to let orders process
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    
-    // Submit market order
-    auto result = engine.submitOrder(marketBuy);
+    cout << "Starting order matching engine simulation...\n";
+    cout << "Submitting orders...\n";
+
+    // Submit some limit orders to build the book
+    for (int i = 0; i < 10; ++i) {
+        auto side = sideDis(gen) == 0 ? OrderSide::BUY : OrderSide::SELL;
+        double price = generatePrice(basePrice, variance, gen);
+        double quantity = quantityDis(gen);
+
+        auto order = make_shared<Order>(
+            generateOrderId(),
+            OrderType::LIMIT,
+            side,
+            price,
+            quantity
+        );
+
+        auto result = engine.submitOrder(order);
+        result.wait();
+        
+        cout << "Submitted " << (side == OrderSide::BUY ? "BUY" : "SELL")
+             << " order: Price=" << fixed << setprecision(2) << price
+             << " Qty=" << quantity << "\n";
+    }
+
+    // Submit a market order
+    auto marketOrder = make_shared<Order>(
+        generateOrderId(),
+        OrderType::MARKET,
+        OrderSide::BUY,
+        0.0,  // Price is ignored for market orders
+        50.0
+    );
+
+    cout << "\nSubmitting market order...\n";
+    auto result = engine.submitOrder(marketOrder);
     result.wait();
 
+    // Submit a stop order
+    auto stopOrder = make_shared<Order>(
+        generateOrderId(),
+        OrderType::STOP,
+        OrderSide::SELL,
+        basePrice - variance,  // Limit price
+        100.0,
+        basePrice + variance   // Stop price
+    );
+
+    cout << "Submitting stop order...\n";
+    result = engine.submitOrder(stopOrder);
+    result.wait();
+
+    // Let the engine process orders
+    this_thread::sleep_for(chrono::seconds(1));
+
     // Print performance metrics
-    std::cout << "Average latency: " << engine.getAverageLatencyMicros() << " microseconds\n";
-    std::cout << "Orders/second: " << engine.getOrdersProcessedPerSecond() << "\n";
+    cout << "\nPerformance Metrics:\n";
+    cout << "Average latency: " << engine.getAverageLatencyMicros() << " microseconds\n";
+    cout << "Orders/second: " << engine.getOrdersProcessedPerSecond() << "\n";
 
     engine.stop();
     return 0;
